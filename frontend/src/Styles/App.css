@@ -1,0 +1,1159 @@
+/* Global styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    background-color: #f7f7f7;
+  }
+  
+  /* ... (other existing global styles) */
+  
+  
+  /* Navigation bar styles */
+  nav {
+    display: flex;
+    padding: 0.5% 2%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .clickable-area {
+    display: inline-flex; /* or inline-block if you prefer */
+    align-items: center;
+    cursor: pointer;
+}
+  
+  .logo {
+    width: 150px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  
+  .logo span {
+    margin-left: 10px;
+  }
+  
+  .nav-links {
+    flex: 1;
+    text-align: center;
+    text-align: right;
+    padding-top: 10px;
+  }
+  
+  .nav-links ul li {
+    list-style: none;
+    display: inline-block;
+    justify-items: center;
+    align-items: center;
+    padding: 10px 12px;
+    position: relative;
+  }
+  
+  .nav-links ul li::after {
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #f44336;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+  }
+  
+  .nav-links ul li:hover::after {
+    width: 100%;
+  }
+  
+  .nav-links ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  
+  nav a {
+    text-decoration: none;
+  }
+  
+  nav i {
+    color: blue;
+  }
+  
+  /* Container styles */
+  .container {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(background.png);
+    background-position: cover;
+    background-size: cover;
+    position: relative;
+  }
+  
+  .container-home {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(bg_home1.jpg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+  }
+  
+  /* Form box styles */
+  .form-box {
+    width: 90%;
+    max-width: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 50px 60px 60px;
+    text-align: center;
+    border-radius: 12px;
+    opacity: 0.8;
+  }
+  
+  .form-box-home h1 {
+    color: white;
+    font-size: 40px;
+    position: relative;
+    margin-top: 180px;
+    margin-left: 1060px;
+  }
+  
+  .form-box-home #changeText {
+    color: blue;
+    font-size: 30px;
+    margin-top: 10px;
+    margin-left: 1060px;
+  }
+  
+  .form-box h1 {
+    font-size: 30px;
+    margin-bottom: 60px;
+    color: #3c00a0;
+    position: relative;
+  }
+  
+  .form-box h1::after {
+    content: '';
+    width: 30px;
+    height: 4px;
+    border-radius: 3px;
+    background: #3c00a0;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .input-field {
+    background: #eaeaea;
+    margin: 15px 0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    max-height: 65px;
+    transition: max-height 0.5s;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .input-field input {
+    padding-right: 130px;
+  }
+  
+  input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+  }
+  
+  .input-field i {
+    margin-left: 15px;
+    color: #999;
+  }
+  
+  form p {
+    text-align: left;
+    font-size: 13px;
+  }
+  
+  form p a {
+    text-decoration: none;
+    color: #3c00a0;
+  }
+  
+  .btn-field {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn-field button {
+    flex-basis: 48%;
+    background: #3c00a0;
+    color: #fff;
+    height: 50px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 1s;
+  }
+  
+  .input-group {
+    height: 320px;
+  }
+  
+  .btn-field button.disable {
+    background: #eaeaea;
+    background: #555;
+  }
+  
+  /* Transition styles */
+  .my-node-enter {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 300ms, opacity 300ms;
+  }
+  
+  .my-node-enter-active {
+    max-height: 60px;
+    opacity: 1;
+  }
+  
+  .my-node-exit {
+    max-height: 60px;
+    opacity: 1;
+  }
+  
+  .my-node-exit-active {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 300ms, opacity 300ms;
+  }
+  
+  /* Button styles */
+  .active {
+    background-color: #4caf50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+  
+  .disable {
+    background-color: #808080; /* Gray */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+  
+  .invisible {
+    visibility: hidden;
+  }
+  
+  
+  /* Dashboard-specific styles */
+  .dashboard {
+    padding: 20px;
+    
+  }
+
+  
+  .dashboard-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .dashboard h1 {
+    font-size: 24px;
+    color: #3c00a0;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  
+  .dashboard a {
+    margin: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #fff;
+    background-color: #3c00a0;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .dashboard a:hover {
+    background-color: #33006f;
+  }
+  
+  
+  .dashboard .logout-btn {
+    position: relative;
+    color: white; /* Set text color to white */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: black; /* Set background color to black */
+    z-index: 1; /* Ensure the button is above the pseudo-element */
+    box-shadow: none; /* Remove any box shadow */
+    border-radius: 0; /* Remove border radius */
+  }
+  
+  .dashboard .logout-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: black; /* Set background color to black */
+    opacity: 0.7; /* Adjust the opacity as needed */
+    pointer-events: none; /* Ensure the pseudo-element doesn't interfere with clicks */
+    z-index: -1; /* Move the pseudo-element behind the button */
+  }
+  
+  .dashboard .logout-btn span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .dashboard .logout-btn:focus,
+  .dashboard .logout-btn:active {
+    outline: none;
+    background: black; /* Set background color to black */
+  }
+  
+  nav .logout-btn , nav .home-btn{
+    background: transparent;
+    color: white;
+    padding: 10px 12px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  
+  nav .logout-btn::before, nav .home-btn::before {
+    display: none;
+  }
+  
+  nav .logout-btn span {
+    position: static;
+  }
+  
+  nav .logout-btn:focus,
+  nav .logout-btn:active, 
+  nav .home-btn:focus,
+  nav .home-btn:active{
+    outline: none;
+    background: transparent;
+  }
+  
+/* Add Expense Form */
+.add-expense-form {
+    width: 90%;
+    max-width: 450px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .add-expense-form h1 {
+    font-size: 24px;
+    color: #3c00a0;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+  }
+  
+  .add-expense-form h1::after {
+    content: "";
+    width: 30px;
+    height: 4px;
+    border-radius: 3px;
+    background: #3c00a0;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: left;
+  }
+  
+  .add-expense-form .input-field {
+    background: #eaeaea;
+    margin: 15px 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    max-height: 65px;
+    transition: max-height 0.5s;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    border: 1px solid #ccc; 
+    transition: border-color 0.3s;
+    /* Add borders to the input field */
+  }
+
+  .add-expense-form .input-field:hover {
+    border-color: #3c00a0; /* Add hover effect to the input fields */
+  }
+  
+  .add-expense-form .input-field input,
+  .add-expense-form .input-field textarea {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+    border: none; /* Remove the default border */
+  }
+  
+  .add-expense-form .input-field input[type="text"]::placeholder,
+  .add-expense-form .input-field input[type="number"]::placeholder,
+  .add-expense-form .input-field textarea::placeholder {
+    text-align: left; /* Align the placeholder text to the right */
+  }
+  
+  .add-expense-form .input-field i {
+    margin-left: 15px;
+    color: #999;
+  }
+  
+  .add-expense-form .btn-field {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .add-expense-form .btn-field button {
+    flex-basis: 48%;
+    background: #3c00a0;
+    color: #fff;
+    height: 50px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .add-expense-form .btn-field button.cancel-btn {
+    background: #ccc;
+  }
+  
+  .add-expense-form .btn-field button.cancel-btn:hover {
+    background: #ddd;
+  }
+  
+  .add-expense-form .btn-field button.submit-btn:hover {
+    background: #33006f;
+  }
+  
+
+  .add-expense-form .error-message {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  /* Additional styles for the "Add Expense" button and "Close" button */
+.add-expense-form .add-expense-btn {
+  flex: 1; /* Allow both buttons to grow and take available space */
+  background: #3c00a0;
+  color: #fff;
+  height: 50px;
+  padding: 0 20px; /* Add padding to provide some space around the text */
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0 5px; /* Add equal margin to both sides */
+}
+
+.add-expense-form .close-form-btn{
+    flex: 1; /* Allow both buttons to grow and take available space */
+    background: red;
+    color: #fff;
+    height: 50px;
+    padding: 0 20px; /* Add padding to provide some space around the text */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0 5px;
+}
+
+
+
+
+.add-expense-form .add-expense-btn:hover{
+  background: #33006f; /* Darker color on hover */
+}
+
+.add-expense-form .close-form-btn:hover {
+    background-color: #990000; /* Darker red color on hover */
+  }
+
+.add-expense-form .add-expense-btn {
+  margin-right: 5px; /* Add a slight space between the two buttons */
+}
+
+/* AddIncome.css (You can create a new CSS file for this component) */
+.add-income-form {
+    width: 90%;
+    max-width: 450px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .add-income-form h1 {
+    font-size: 24px;
+    color: #3c00a0;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+  }
+  
+  .add-income-form h1::after {
+    content: "";
+    width: 30px;
+    height: 4px;
+    border-radius: 3px;
+    background: #3c00a0;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: left;
+  }
+  
+  .add-income-form .input-field {
+    background: #eaeaea;
+    margin: 15px 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    max-height: 65px;
+    transition: max-height 0.5s;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+    /* Add borders to the input field */
+  }
+  
+  .add-income-form .input-field:hover {
+    border-color: #3c00a0; /* Add hover effect to the input fields */
+  }
+  
+  .add-income-form .input-field input,
+  .add-income-form .input-field textarea {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+    border: none; /* Remove the default border */
+  }
+  
+  .add-income-form .input-field input[type="text"]::placeholder,
+  .add-income-form .input-field input[type="number"]::placeholder,
+  .add-income-form .input-field textarea::placeholder {
+    text-align: left; /* Align the placeholder text to the right */
+  }
+  
+  .add-income-form .input-field i {
+    margin-left: 15px;
+    color: #999;
+  }
+  
+  .add-income-form .btn-field {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .add-income-form .btn-field button {
+    flex-basis: 48%;
+    background: #3c00a0;
+    color: #fff;
+    height: 50px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .add-income-form .btn-field button.cancel-btn {
+    background: #ccc;
+  }
+  
+  .add-income-form .btn-field button.cancel-btn:hover {
+    background: #ddd;
+  }
+  
+  .add-income-form .btn-field button.submit-btn:hover {
+    background: #33006f;
+  }
+  
+  .add-income-form .error-message {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  /* Additional styles for the "Add Income" button and "Close" button */
+  .add-income-form .add-income-btn {
+    flex: 1; /* Allow both buttons to grow and take available space */
+    background: #3c00a0;
+    color: #fff;
+    height: 50px;
+    padding: 0 20px; /* Add padding to provide some space around the text */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0 5px; /* Add equal margin to both sides */
+  }
+  
+  .add-income-form .close-form-btn {
+    flex: 1; /* Allow both buttons to grow and take available space */
+    background: red;
+    color: #fff;
+    height: 50px;
+    padding: 0 20px; /* Add padding to provide some space around the text */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0 5px;
+  }
+  
+  .add-income-form .add-income-btn:hover {
+    background: #33006f; /* Darker color on hover */
+  }
+  
+  .add-income-form .close-form-btn:hover {
+    background-color: #990000; /* Darker red color on hover */
+  }
+  
+  .add-income-form .add-income-btn {
+    margin-right: 5px; /* Add a slight space between the two buttons */
+  }
+
+  /* Additional styles for the "Add Expense" and "Add Income" buttons */
+.add-expense-btn,
+.add-income-btn {
+  flex: 1;
+  background: #3c00a0;
+  color: #fff;
+  height: 50px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0 5px;
+}
+
+.close-form-btn {
+  flex: 1;
+  background: red;
+  color: #fff;
+  height: 50px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0 5px;
+}
+
+.add-expense-btn:hover,
+.add-income-btn:hover,
+.close-form-btn:hover {
+  background: #33006f;
+}
+
+  
+.welcome-message {
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  
+  .welcome-message h1 {
+    color: whitesmoke;
+    font-weight: 500;
+    font-size: 32px;
+    padding: 10px;
+  }
+
+/* Card styles */
+/* Dashboard-specific styles */
+/* ... (other existing styles) */
+
+.card-container {
+    display: flex;
+    justify-content: center; /* Center the cards horizontally */
+    gap: 20px; /* Add spacing between the cards */
+    margin-top: 40px;
+    flex-wrap: wrap;
+    border-radius: 10px 10px 10px 10px; 
+  }
+  
+  .card {
+    background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  color: #3c00a0;
+  transition: all 0.2s ease-in-out;
+  flex: 1;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 200px;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 10px 10px 10px 10px; 
+  }
+  
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card img {
+    width: 250px;
+    height: 125px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    /* border-radius: 10px 10px 10px 10px;  */
+    border-radius: 10px;
+
+  }
+  
+  .card p {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 5px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 0 0 10px 10px; /* Round the bottom corners */
+  }
+
+  .card-container a:hover {
+  text-decoration: none;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  filter: blur(10px);
+  z-index: -1;
+  transition: transform 0.3s;/* Send the pseudo-element behind the card content */
+}
+
+.card:hover::before {
+  transform: scale(1.1); /* Enlarge the blurred background on hover */
+}
+
+
+  /* Expense and Income lists styles */
+  .expense-list,
+  .income-list {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    flex: 1;
+  }
+  
+  .expense-list h2,
+  .income-list h2 {
+    font-size: 24px;
+    color: #3c00a0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .expense-list table,
+  .income-list table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .expense-list th,
+  .income-list th,
+  .expense-list td,
+  .income-list td {
+    padding: 10px;
+  }
+  
+  .expense-list th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+  }
+  
+  .expense-list tr:nth-child(even),
+  .income-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  
+  .expense-list th:nth-child(1),
+  .income-list th:nth-child(1),
+  .expense-list td:nth-child(1),
+  .income-list td:nth-child(1) {
+    width: 20%;
+  }
+  
+  .expense-list th:nth-child(2),
+  .income-list th:nth-child(2),
+  .expense-list td:nth-child(2),
+  .income-list td:nth-child(2) {
+    width: 50%;
+  }
+  
+  .expense-list th:nth-child(3),
+  .income-list th:nth-child(3),
+  .expense-list td:nth-child(3),
+  .income-list td:nth-child(3) {
+    width: 20%;
+  }
+  
+  /* Total expenses and total incomes styles */
+  .expense-list .total-amount,
+  .income-list .total-amount {
+    text-align: right;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  
+  
+  /* Additional styles for the date */
+  .expense-list p:nth-child(3)::before,
+  .income-list p:nth-child(3)::before {
+    content: "Date: ";
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  
+  /* Styles for the amount */
+  .expense-list p:nth-child(1)::before,
+  .income-list p:nth-child(1)::before {
+    content: "Amount: $";
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  
+  /* Styles for the description */
+  .expense-list p:nth-child(2)::before,
+  .income-list p:nth-child(2)::before {
+    content: "Description: ";
+    font-weight: 600;
+  }
+  
+  /* New styles for the list containers */
+  .list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+    margin-top: 20px;
+  }
+  
+  /* Additional styles for the "Add Expense" and "Add Income" buttons */
+  .add-expense-btn,
+  .add-income-btn {
+    flex-basis: calc(50% - 10px); /* Take up 50% of the container width minus the gap */
+    background: #3c00a0;
+    color: #fff;
+    height: 50px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 10px; /* Add a little space at the top */
+  }
+  
+  .close-form-btn {
+    flex-basis: calc(50% - 10px); /* Take up 50% of the container width minus the gap */
+    background: red;
+    color: #fff;
+    height: 50px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 10px; /* Add a little space at the top */
+  }
+  
+  .add-expense-btn:hover,
+  .add-income-btn:hover,
+  .close-form-btn:hover {
+    background: #33006f;
+  }
+
+  /* Balance styles */
+.balance-container {
+  background-color:rgba(255, 255, 255, 0.1);
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+
+}
+
+.balance-container h2{
+  color: whitesmoke;
+  font-weight: 500;
+  font-size: 32px;
+  padding: 10px;
+}
+
+.balance {
+  font-size: 36px;
+  font-weight: bold;
+  color: #3c00a0;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.balance-positive {
+  color: green;
+}
+
+.balance-negative {
+  color: red;
+}
+
+/* Graph-view */
+.chart-view {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5%;  /* Reduced padding */
+  width: 65%;  /* Reduced width further */
+  max-width: 600px;  /* Further reduced max-width */
+  margin: 2% auto;
+  overflow: hidden;
+  position: relative;
+  z-index: 1000;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 20vh;  /* Reduced height to 20vh */
+}
+
+/* AboutView styles */
+.about-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  color: #333; /* Dark text color */
+}
+
+.about-container h1 {
+  font-size: 24px;
+  color: #3c00a0;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.about-container h1::after {
+  content: "";
+  width: 30px;
+  height: 4px;
+  border-radius: 3px;
+  background: #3c00a0;
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.about-container p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* Contact us styling */
+.contact-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.contact-container h1 {
+  font-size: 24px;
+  color: #3c00a0;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.contact-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.contact-info {
+  list-style-type: none;
+  padding: 0;
+}
+
+.contact-info li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-info li svg {
+  margin-right: 10px;
+  color: #3c00a0;
+}
+
+.social-media {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.social-icon {
+  font-size: 24px;
+  margin: 0 10px;
+  color: #3c00a0;
+  transition: color 0.3s;
+}
+
+.social-icon:hover {
+  color: #33006f;
+}
+
+
+
+
+
+
+
+
+
+
+
