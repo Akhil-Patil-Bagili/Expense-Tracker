@@ -1,22 +1,22 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
+# Standard library imports
 from django.http import HttpResponse
-from .models import Expense
-from .serializers import ExpenseSerializer
-from django.contrib.auth.hashers import make_password
-from rest_framework import generics
-from .models import Income
-from .serializers import IncomeSerializer
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth import authenticate, login
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import RefreshToken 
+
+# Third-party imports
+from rest_framework import status, generics, exceptions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view, permission_classes
-from django.db import models
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+# Local application/library specific imports
+from .serializers import UserSerializer, ExpenseSerializer, IncomeSerializer
+from . import models
+from .models import Expense, Income
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

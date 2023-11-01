@@ -1,15 +1,17 @@
 from django.urls import path
+
 from .views import (
     index,
     UserRegistrationView,
     UserLoginView,
     UserExpenseListView,
     UserIncomeListView,
-    UserExpenseCreateView,
-    UserIncomeCreateView,
     UserTotalExpenses,
-    UserTotalIncomes
+    UserTotalIncomes,
+    UserExpenseCreateView,
+    UserIncomeCreateView
 )
+
 
 urlpatterns = [
     path('', index, name='index'),
