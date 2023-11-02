@@ -3,12 +3,24 @@ import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../App";
 
-function Form({ showNameField, setShowNameField, setTitle, title }) {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Form({ showNameField, setShowNameField, setTitle }) {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: ""
+  });
+
+  const { username, email, password } = formData;
+  const [error, setError] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setError(null); // Reset the error state whenever there's a change in input
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -19,35 +31,26 @@ function Form({ showNameField, setShowNameField, setTitle, title }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        // Show an alert for successful signup
         alert("User signed up successfully! You can now log in.");
-        // Reset the form fields after successful signup
-        setUsername("");
-        setEmail("");
-        setPassword("");
+        setFormData({ username: "", email: "", password: "" });
         setShowNameField(false);
         setTitle("Sign In");
       } else {
         const data = await response.json();
-        alert(`Failed to sign up. Error: ${data.detail}`);
+        setError(`Failed to sign up. Error: ${data.detail}`);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to sign up. Please try again.");
+      setError("Failed to sign up. Please try again.");
     }
   };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    console.log("Form data:", { username, password });
     try {
       const response = await fetch("http://127.0.0.1:8000/api/login/", {
         method: "POST",
@@ -62,96 +65,82 @@ function Form({ showNameField, setShowNameField, setTitle, title }) {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("access", data.access); // Save the access token to localStorage
-        console.log("User signed in successfully!");
-        setUser(username); // Set the authenticated user
-        navigate("/dashboard"); // Navigate to dashboard
+        localStorage.setItem("access", data.access);
+        setUser(username);
+        navigate("/dashboard");
       } else {
         const data = await response.json();
-        alert(`Failed to sign in. Error: ${data.error}`);
+        setError(`Failed to sign in.   Error: ${data.error}`);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to sign in. Please try again.");
+      setError("Failed to sign in. Please try again.");
     }
   };
 
   return (
     <>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={showNameField ? handleSignUp : handleSignIn}>
         <div className="input-group">
-          <div className="input-field" id="nameField">
+          <div className="input-field">
             <FaUser />
             <input
               type="text"
+              name="username"
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleInputChange}
+              required
             />
           </div>
 
-          {showNameField ? (
+          {showNameField && (
             <div className="input-field">
               <FaEnvelope />
               <input
                 type="email"
+                name="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleInputChange}
+                required
               />
             </div>
-          ) : (
-            <div className="input-field invisible"></div>
           )}
 
           <div className="input-field">
             <FaLock />
             <input
               type="password"
+              name="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleInputChange}
+              required
             />
           </div>
         </div>
-        <div
-          className="btn-field"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <button type="submit" id={showNameField ? "signupBtn" : "signinBtn"}>
+        <div className="btn-field" style={{ display: "flex", justifyContent: "center" }}>
+          <button type="submit">
             {showNameField ? "Sign Up" : "Sign In"}
           </button>
         </div>
       </form>
 
-      <div
-        className="btn-field"
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <button
-          type="button"
-          id="showSignupBtn"
-          className={showNameField ? "active" : "disable"}
-          onClick={() => {
-            setShowNameField(true);
-            setTitle("Sign Up");
-          }}
+      <div className="btn-field" style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}>
+        <button 
+          type="button" 
+          onClick={() => { setShowNameField(true); setTitle("Sign Up"); }}
+          className={showNameField ? "active" : "disable"} 
           style={{ marginRight: "10px" }}
         >
           Sign Up
         </button>
-        <button
-          type="button"
-          id="showSigninBtn"
+        <button 
+          type="button" 
+          onClick={() => { setShowNameField(false); setTitle("Sign In"); }}
           className={!showNameField ? "active" : "disable"}
-          onClick={() => {
-            setShowNameField(false);
-            setTitle("Sign In");
-          }}
         >
           Sign In
         </button>

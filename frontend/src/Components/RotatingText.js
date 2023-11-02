@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "../Styles/App.css";
 
+// Static array of rotating texts
+const ROTATING_TEXTS = [
+  "on Trips.",
+  "with Friends.",
+  "with Roomates.",
+  "with your Partner.",
+  "with Anyone.",
+];
+
 function RotatingText() {
   const [counter, setCounter] = useState(0);
-  const text = [
-    "on Trips.",
-    "with Friends.",
-    "with Roomates.",
-    "with your Partner.",
-    "with Anyone.",
-  ];
 
   useEffect(() => {
+    // Rotate text every 2 seconds
     const timer = setInterval(() => {
-      setCounter((currentCounter) => {
-        if (currentCounter >= text.length - 1) {
-          return 0;
-        }
-        return currentCounter + 1;
-      });
+      setCounter((currentCounter) => (currentCounter + 1) % ROTATING_TEXTS.length);
     }, 2000);
-    // Clear interval on unmount
-    return () => clearInterval(timer);
-  }, [text.length]);
 
-  return <div id="changeText">{text[counter]}</div>;
+    // Clear interval on component unmount
+    return () => clearInterval(timer);
+  }, []);
+
+  return <div id="changeText">{ROTATING_TEXTS[counter]}</div>;
 }
 
 export default RotatingText;

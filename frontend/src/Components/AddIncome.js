@@ -1,4 +1,3 @@
-// AddIncome.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/App.css";
@@ -8,19 +7,18 @@ const AddIncome = () => {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [error, setError] = useState(null);
 
   const handleAddIncome = (e) => {
     e.preventDefault();
 
     const accessToken = localStorage.getItem("access");
-    // Create an object with the income data
     const newIncome = {
       amount: parseFloat(amount),
       description,
       date,
     };
 
-    // Send the income data to the server (Django backend) using fetch
     fetch("http://127.0.0.1:8000/api/incomes/create/", {
       method: "POST",
       headers: {
@@ -31,36 +29,35 @@ const AddIncome = () => {
     })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to add income.");
+        return response.json().then((data) => {
+          throw new Error(data.detail || "Failed to add income.");
+        });
       }
       return response.json();
     })
     .then((data) => {
-      // Handle the response, you can show a success message or navigate back to the Dashboard
-      console.log("Income added successfully!", data);
       navigate("/dashboard");
     })
-      .catch((error) => {
-        // Handle errors, show an error message, etc.
-        console.error("Error:", error);
-      });
+    .catch((error) => {
+      setError(error.message);
+    });
   };
 
   const handleFormClose = () => {
-    navigate("/dashboard"); // Navigate back to the dashboard
+    navigate("/dashboard");
   };
 
   return (
     <div className="add-income-form">
       <h1>Add Income</h1>
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleAddIncome}>
-      <div className="input-field">
+        <div className="input-field">
           <i className="fas fa-dollar-sign"></i>
           <input
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            // placeholder="$"
             required
           />
         </div>

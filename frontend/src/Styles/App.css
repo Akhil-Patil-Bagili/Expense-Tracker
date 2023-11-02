@@ -120,6 +120,7 @@ body {
   .form-box-home h1 {
     color: white;
     font-size: 40px;
+    font-weight: bold;
     position: relative;
     margin-top: 180px;
     margin-left: 1060px;
@@ -240,6 +241,9 @@ body {
     opacity: 0;
     transition: max-height 300ms, opacity 300ms;
   }
+
+  
+
   
   /* Button styles */
   .active {
@@ -1145,6 +1149,44 @@ canvas {
 
 .social-icon:hover {
   color: #33006f;
+}
+
+/* Error Message Styling */
+.error-message {
+  color: #e74c3c; /* A commonly used shade of red for errors */
+  background-color: #fee; /* Light red background for better visibility */
+  padding: 10px;
+  border: 1px solid #e74c3c;
+  border-radius: 5px;
+  margin: 5px 0;
+  display: inline-block; /* Allows it to wrap around content */
+  font-size: 14px; /* Slightly smaller text to differentiate from regular content */
+  max-width: 90%; /* Ensures it doesn't stretch too far */
+  text-align: left;
+  transition: opacity 0.3s, max-height 0.5s; /* Smooth transition for potential hide/show actions */
+}
+
+/* If you plan on showing/hiding error messages dynamically */
+.hidden {
+  opacity: 0;
+  max-height: 0;
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
+  margin: 0; /* Remove margin */
+  overflow: hidden; /* Prevents showing anything outside the box */
+}
+
+.input-field.with-error {
+  border-color: #e74c3c; /* Highlight the input field border when there's an error */
+}
+
+.input-field.with-error:hover {
+  border-color: #e74c3c; /* Ensure hover doesn't override the error color */
+}
+
+.input-field.with-error input,
+.input-field.with-error textarea {
+  border-color: #e74c3c; /* If input or textarea has its own border, make it the error color too */
 }
 
 

@@ -4,34 +4,33 @@ import { AiFillInstagram, AiFillMail, AiFillPhone } from 'react-icons/ai';
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
 
-const Contact = () => {
-    return (
-        <div className="contact-container">
+const Contact = () => (
+    <div className="contact-container">
+        <header>
             <h1>Contact Me</h1>
-            <div className="contact-content">
-                <p>Got a question or just want to say hi? Feel free to get in touch with me.</p>
-                <ul className="contact-info">
-                    <li><AiFillMail /> akhilpatilbagili@gmail.com</li>
-                    <li><AiFillPhone /> +1 9178323147</li>
-                    <li><MdLocationOn /> San Jose, California</li>
-                </ul>
-                <div className="social-media">
-                    {/* eslint-disable-next-line */}
-                    <a href="https://www.instagram.com/akhil_patil_b/" target="_blank" rel="noopener noreferrer">
-                        <AiFillInstagram className="social-icon" />
-                    </a>
-                    {/* eslint-disable-next-line */}
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                        <FaGithub className="social-icon" />
-                    </a>
-                    {/* eslint-disable-next-line */}
-                    <a href="https://www.linkedin.com/in/akhil-patil-bagili/" target="_blank" rel="noopener noreferrer">
-                        <FaLinkedinIn className="social-icon" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    );
-};
+            <p>Got a question or just want to say hi? Feel free to get in touch with me.</p>
+        </header>
+
+        <main className="contact-content">
+            <section className="contact-info">
+                <p><AiFillMail /> akhilpatilbagili@gmail.com</p>
+                <p><AiFillPhone /> +19178323147</p>
+                <p><MdLocationOn /> San Jose, California</p>
+            </section>
+
+            <section className="social-media">
+                <a href="https://www.instagram.com/akhil_patil_b/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <AiFillInstagram className="social-icon" />
+                </a>
+                <a href="YOUR_GITHUB_LINK_HERE" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <FaGithub className="social-icon" />
+                </a>
+                <a href="https://www.linkedin.com/in/akhil-patil-bagili/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <FaLinkedinIn className="social-icon" />
+                </a>
+            </section>
+        </main>
+    </div>
+);
 
 export default Contact;

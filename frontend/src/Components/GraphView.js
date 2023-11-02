@@ -16,47 +16,42 @@ Chart.register(CategoryScale, LinearScale, BarController, BarElement, Title, Too
 const GraphView = () => {
     const [expenses, setExpenses] = useState([]);
     const [incomes, setIncomes] = useState([]);
+    const [error, setError] = useState(null);
 
     const chartRef = useRef(null);
     const myChartRef = useRef(null);
 
-    const groupByMonth = (arr) => {
-        let grouped = {};
-        arr.forEach(item => {
-            const date = new Date(item.date);
-            if (!isNaN(date.getTime())) {
-                const month = date.getMonth();
-                grouped[month] = (grouped[month] || 0) + parseFloat(item.amount);
-            }
-        });
-        return grouped;
-    }
+    const groupByMonth = (arr) => arr.reduce((acc, item) => {
+        const date = new Date(item.date);
+        const month = date.getMonth();
+        acc[month] = (acc[month] || 0) + parseFloat(item.amount);
+        return acc;
+    }, {});
 
     useEffect(() => {
         const fetchData = async () => {
+            const headers = {
+                Authorization: `Bearer ${localStorage.getItem("access")}`,
+            };
+
             try {
-                const headers = {
-                    Authorization: `Bearer ${localStorage.getItem("access")}`,
-                };
+                const [expensesResponse, incomesResponse] = await Promise.all([
+                    fetch("http://127.0.0.1:8000/api/expenses/", { headers }),
+                    fetch("http://127.0.0.1:8000/api/incomes/", { headers })
+                ]);
 
-                // Fetch expenses
-                const expensesResponse = await fetch("http://127.0.0.1:8000/api/expenses/", { headers });
-                if (!expensesResponse.ok) {
-                    throw new Error("Failed to fetch expenses.");
-                }
-                let expensesData = await expensesResponse.json();
+                const expensesData = await expensesResponse.json();
+                const incomesData = await incomesResponse.json();
 
-                // Fetch incomes
-                const incomesResponse = await fetch("http://127.0.0.1:8000/api/incomes/", { headers });
-                if (!incomesResponse.ok) {
-                    throw new Error("Failed to fetch incomes.");
+                if (!expensesResponse.ok || !incomesResponse.ok) {
+                    throw new Error("Failed to fetch data.");
                 }
-                let incomesData = await incomesResponse.json();
 
                 setExpenses(expensesData.results);
                 setIncomes(incomesData.results);
-            } catch (error) {
-                console.error("Error:", error);
+            } catch (err) {
+                setError("An error occurred while fetching data.");
+                console.error(err.message);
             }
         };
 
@@ -64,6 +59,8 @@ const GraphView = () => {
     }, []);
 
     useEffect(() => {
+        if (!expenses.length && !incomes.length) return;
+
         const monthlyExpenses = groupByMonth(expenses);
         const monthlyIncomes = groupByMonth(incomes);
 
@@ -74,36 +71,35 @@ const GraphView = () => {
         const maxYValue = Math.max(...expensesData, ...incomesData);
         const maxRoundedYValue = Math.ceil(maxYValue / 5000) * 5000;
 
-        const chartData = {
-            labels: labels,
-            datasets: [
-                {
-                    label: "Expenses",
-                    data: expensesData,
-                    backgroundColor: "rgba(255, 99, 132, 0.8)",
-                    borderColor: "rgba(255, 99, 132, 1)",
-                    borderWidth: 1,
-                },
-                {
-                    label: "Incomes",
-                    data: incomesData,
-                    backgroundColor: "rgba(75, 192, 192, 0.8)",
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    borderWidth: 1,
-                }
-            ],
-        };
+        if (chartRef.current && myChartRef.current) {
+            const { datasets } = myChartRef.current.data;
+            datasets[0].data = expensesData;
+            datasets[1].data = incomesData;
 
-        if (chartRef && chartRef.current) {
+            myChartRef.current.update();
+        } else {
             const ctx = chartRef.current.getContext("2d");
-            if (myChartRef.current) {
-                myChartRef.current.destroy();
-                myChartRef.current = null;
-            }
-
             myChartRef.current = new Chart(ctx, {
                 type: "bar",
-                data: chartData,
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Expenses",
+                            data: expensesData,
+                            backgroundColor: "rgba(255, 99, 132, 0.8)",
+                            borderColor: "rgba(255, 99, 132, 1)",
+                            borderWidth: 1,
+                        },
+                        {
+                            label: "Incomes",
+                            data: incomesData,
+                            backgroundColor: "rgba(75, 192, 192, 0.8)",
+                            borderColor: "rgba(75, 192, 192, 1)",
+                            borderWidth: 1,
+                        }
+                    ],
+                },
                 options: {
                     scales: {
                         x: {
@@ -136,17 +132,11 @@ const GraphView = () => {
                 },
             });
         }
-
-        return () => {
-            if (myChartRef.current) {
-                myChartRef.current.destroy();
-                myChartRef.current = null;
-            }
-        };
     }, [expenses, incomes]);
 
     return (
         <div className="chart-view">
+            {error && <p className="error-message">{error}</p>}
             <canvas ref={chartRef}></canvas>
         </div>
     );

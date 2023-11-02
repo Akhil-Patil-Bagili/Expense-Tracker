@@ -12,28 +12,16 @@ const NavBar = () => {
     navigate("/login");
   };
 
-  const changeHome = () => {
-    navigate("/dashboard");
-  }
-
   return (
     <nav>
-     <div className="logo" onClick={() => navigate(user ? "/dashboard" : "/")}>
-        <i className="fa-solid fa-money-bill"></i> 
+      <div className="logo" onClick={() => navigate(user ? "/dashboard" : "/")}>
+        <i className="fa-solid fa-money-bill"></i>
         <span>EXPENSE TRACKER</span>
-    </div>
-
-
+      </div>
       <div className="nav-links">
         <ul>
           <li>
-            {user ? (
-               <button className="home-btn" onClick={changeHome}>
-                  HOME
-               </button>
-            ) : (
-              <a href="/">HOME</a>
-            )}
+            <Link to={user ? "/dashboard" : "/"}>HOME</Link>
           </li>
           {!user && (
             <>
@@ -41,7 +29,7 @@ const NavBar = () => {
                 <Link to="/about">ABOUT</Link>
               </li>
               <li>
-                <a href="/contact">CONTACT</a>
+                <Link to="/contact">CONTACT</Link>
               </li>
             </>
           )}
@@ -51,7 +39,7 @@ const NavBar = () => {
                 LOGOUT
               </button>
             ) : (
-              <a href="/login">LOGIN</a>
+              <Link to="/login">LOGIN</Link>
             )}
           </li>
         </ul>
