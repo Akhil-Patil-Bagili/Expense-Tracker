@@ -22,7 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "clean": "rm -rf build node_modules && npm install"
+    "clean": "rm -rf build node_modules && npm install",
+    "heroku-postbuild": "react-scripts build"  // Added this line
   },
   "eslintConfig": {
     "extends": [
