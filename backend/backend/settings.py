@@ -10,7 +10,8 @@ SECRET_KEY = 'django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q
 
 DEBUG = True  # Make sure this is set to False in production!
 
-ALLOWED_HOSTS = ['0.0.0.0', '.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['expense-tracker-akhil-patil.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
+
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
