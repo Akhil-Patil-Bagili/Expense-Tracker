@@ -8,11 +8,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q'
 
-DEBUG = False  # Make sure this is set to False in production!
+DEBUG = True  # Make sure this is set to False in production!
 
 ALLOWED_HOSTS = ['0.0.0.0', '.herokuapp.com', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,11 +30,11 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -43,7 +44,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../../frontend/build')],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],  # Serve the React build folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,25 +59,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database configuration
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-    }
-    DATABASES['default']['CONN_MAX_AGE'] = 500
-    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
-else:
-    # Local PostgreSQL database settings
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'expense_tracker',  # Update with your local database name
-            'USER': 'trevor',  # Update with your local database user
-            'PASSWORD': 'gtafive',  # Update with your local database password
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
+# DATABASES = {
+#             'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'expense_tracker',  # Update with your local database name
+#             'USER': 'trevor',  # Update with your local database user
+#             'PASSWORD': 'gtafive',  # Update with your local database password
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#         }
+# }
+
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL', 'postgres://trevor:gtafive@localhost:5432/expense_tracker'))
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,8 +95,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, '../../frontend/build/static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static')]
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -126,7 +123,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_ON_REFRESH': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
+
+import django_heroku
+django_heroku.settings(locals())
+

@@ -1,10 +1,18 @@
-node_modules/
-frontend/node_modules/.cache/
-frontend/node_modules/
-node_modules
-backend/backend/__pycache__
+# Node modules for React
+/frontend/node_modules/
+
+
+# SQLite database (even if you're not using it anymore)
+/backend/db.sqlite3
+
+# Backup SQLite database
+/backend/db.sqlite3.backup
+
+
+# Mac generated files
+.DS_Store
+
+# Python cache
 __pycache__/
-*.py[cod]
-*.sqlite3
-venv/
-node_modules/
+*.pyc
+
