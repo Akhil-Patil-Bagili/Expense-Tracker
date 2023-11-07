@@ -8,9 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q'
 
-DEBUG = True  # Make sure this is set to False in production!
+DEBUG = False  # Make sure this is set to False in production!
 
-ALLOWED_HOSTS = ['expense-tracker-akhil-patil.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['expense-tracker-bagili.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
 
 INSTALLED_APPS = [
@@ -71,9 +71,25 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #         }
 # }
 
-DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL', 'postgres://trevor:gtafive@localhost:5432/expense_tracker'))
-}
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DEBUG or not DATABASE_URL:
+    # Use the local PostgreSQL settings when in DEBUG mode or DATABASE_URL isn't set.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'expense_tracker',  # Update with your local database name
+            'USER': 'trevor',  # Update with your local database user
+            'PASSWORD': 'gtafive',  # Update with your local database password
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+else:
+    # Use DATABASE_URL to configure the database when not in DEBUG mode.
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -97,7 +113,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static')]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

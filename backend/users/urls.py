@@ -14,6 +14,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('', index, name='index'),
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('login/', UserLoginView.as_view(), name='user-login'),
     path('api/expenses/', UserExpenseListView.as_view(), name='user-expenses'),
@@ -21,7 +22,5 @@ urlpatterns = [
     path('api/total-expenses/', UserTotalExpenses, name='user-total-expenses'),
     path('api/total-incomes/', UserTotalIncomes, name='user-total-incomes'),
     path('api/expenses/create/', UserExpenseCreateView.as_view(), name='user-expense-create'),
-    path('api/incomes/create/', UserIncomeCreateView.as_view(), name='user-income-create'),
-    # This should be the last pattern
-    path('', TemplateView.as_view(template_name='index.html')),
+    path('api/incomes/create/', UserIncomeCreateView.as_view(), name='user-income-create')
 ]
