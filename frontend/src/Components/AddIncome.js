@@ -19,7 +19,7 @@ const AddIncome = () => {
       date,
     };
 
-    fetch("http://127.0.0.1:8000/api/incomes/create/", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/incomes/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

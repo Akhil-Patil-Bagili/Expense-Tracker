@@ -19,7 +19,7 @@ const AddExpense = () => {
       date: date,
     };
 
-    fetch("http://127.0.0.1:8000/api/expenses/create/", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/expenses/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

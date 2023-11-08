@@ -36,8 +36,8 @@ const GraphView = () => {
 
             try {
                 const [expensesResponse, incomesResponse] = await Promise.all([
-                    fetch("http://127.0.0.1:8000/api/expenses/", { headers }),
-                    fetch("http://127.0.0.1:8000/api/incomes/", { headers })
+                    fetch(`${process.env.REACT_APP_API_URL}/api/expenses/`, { headers }),
+                    fetch(`${process.env.REACT_APP_API_URL}/api/incomes/`, { headers })
                 ]);
 
                 const expensesData = await expensesResponse.json();
