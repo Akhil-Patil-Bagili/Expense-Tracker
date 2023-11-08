@@ -27,6 +27,7 @@ psycopg2==2.9.9
 psycopg2-binary==2.9.9
 Pygments==2.15.1
 PyJWT==1.7.1
+python-dotenv==1.0.0
 pytz==2023.3
 requests==2.31.0
 rich==13.4.2
