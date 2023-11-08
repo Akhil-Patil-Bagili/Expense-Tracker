@@ -2,13 +2,29 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
+
+
+load_dotenv() 
+
+
+def get_env_variable(var_name, default_value=None):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        if default_value is not None:
+            return default_value
+        else:
+            error_msg = f"Set the {var_name} environment variable"
+            raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q')
+SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY','django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q')
 
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = get_env_variable('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['expense-tracker-bagili.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
@@ -70,26 +86,20 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #             'PORT': '5432',
 #         }
 # }
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASES = {}
+DATABASE_URL = get_env_variable('DATABASE_URL', None)
 
 if DEBUG or not DATABASE_URL:
-    # Use the local PostgreSQL settings when in DEBUG mode or DATABASE_URL isn't set.
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'expense_tracker',  # Update with your local database name
-            'USER': 'trevor',  # Update with your local database user
-            'PASSWORD': 'gtafive',  # Update with your local database password
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'expense_tracker',  # Update with your local database name
+        'USER': 'trevor',  # Update with your local database user
+        'PASSWORD': 'gtafive',  # Update with your local database password
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 else:
-    # Use DATABASE_URL to configure the database when not in DEBUG mode.
-    DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL)
-    }
+    DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,6 +122,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
@@ -128,6 +139,11 @@ CORS_EXPOSE_HEADERS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+STATICFILES_DIRS = []
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root')
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -149,7 +165,9 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-import django_heroku
-django_heroku.settings(locals(), staticfiles=False)
+# import django_heroku
+# django_heroku.settings(locals(), staticfiles=False)
+
+
 
 
