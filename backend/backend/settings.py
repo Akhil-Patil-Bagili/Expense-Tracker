@@ -6,9 +6,9 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q')
 
-DEBUG = False  # Make sure this is set to False in production!
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['expense-tracker-bagili.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
@@ -117,7 +117,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = [
+    "https://expense-tracker-bagili.netlify.app",  # Add the correct Netlify domain
+]
+
+CORS_EXPOSE_HEADERS = [
+    'Access-Control-Allow-Origin',
+    # ... other headers you want to expose
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
@@ -141,5 +150,6 @@ SIMPLE_JWT = {
 }
 
 import django_heroku
-django_heroku.settings(locals())
+django_heroku.settings(locals(), staticfiles=False)
+
 
