@@ -97,6 +97,7 @@ if DEBUG or not DATABASE_URL:
         'PASSWORD': 'gtafive',  # Update with your local database password
         'HOST': 'localhost',
         'PORT': '5432',
+        'OPTIONS': {'sslmode' : 'prefer'},
     }
 else:
     DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
