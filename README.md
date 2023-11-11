@@ -32,10 +32,12 @@ To get a local copy up and running, follow these simple steps:
    git clone https://github.com/your_username_/expense-tracker.git
    
 2. Install NPM packages in the frontend directory:
+   ```sh
      cd frontend
      npm install
   
-3. Set up the Django backend (ensure you're in the backend directory):
+4. Set up the Django backend (ensure you're in the backend directory):
+   ```sh
      pip install -r requirements.txt
      python manage.py migrate
      python manage.py runserver
