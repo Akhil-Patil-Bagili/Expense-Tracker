@@ -130,7 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    "https://expense-tracker-bagili.netlify.app",  # Add the correct Netlify domain
+    "https://expense-tracker-bagili.netlify.app",  
 ]
 
 CORS_EXPOSE_HEADERS = [
@@ -144,6 +144,11 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 STATICFILES_DIRS = []
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if 'django.middleware.security.SecurityMiddleware' in MIDDLEWARE:
+    MIDDLEWARE.remove('django.middleware.security.SecurityMiddleware')
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+MIDDLEWARE.insert(1, 'django.middleware.security.SecurityMiddleware')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -165,8 +170,8 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# import django_heroku
-# django_heroku.settings(locals(), staticfiles=False)
+import django_heroku
+django_heroku.settings(locals(), staticfiles=False)
 
 
 
