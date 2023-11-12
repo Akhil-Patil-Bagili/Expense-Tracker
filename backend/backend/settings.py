@@ -1,6 +1,7 @@
 from pathlib import Path
 from datetime import timedelta
 import os
+import django_heroku
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
@@ -97,7 +98,7 @@ if DEBUG or not DATABASE_URL:
         'PASSWORD': 'gtafive',  # Update with your local database password
         'HOST': 'localhost',
         'PORT': '5432',
-        'OPTIONS': {'sslmode' : 'prefer'},
+        'OPTIONS': {'sslmode' : 'disable'},
     }
 else:
     DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
@@ -131,7 +132,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    "https://expense-tracker-bagili.netlify.app",  
+    "https://expense-tracker-bagili.netlify.app", 
+    "http://localhost:3000",
 ]
 
 CORS_EXPOSE_HEADERS = [
@@ -141,7 +143,7 @@ CORS_EXPOSE_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 STATICFILES_DIRS = []
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -171,9 +173,6 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-import django_heroku
-django_heroku.settings(locals(), staticfiles=False)
 
-
-
-
+if 'DYNO' in os.environ:
+    django_heroku.settings(locals(), staticfiles=False)
