@@ -143,7 +143,7 @@ CORS_EXPOSE_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 STATICFILES_DIRS = []
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
