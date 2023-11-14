@@ -4,6 +4,7 @@ import os
 import django_heroku
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
+from .dynamic_cors_middleware import DynamicCorsMiddleware
 from dotenv import load_dotenv
 
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'backend.dynamic_cors_middleware.DynamicCorsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -130,12 +132,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOWED_ORIGINS = [
-    # "https://expense-tracker-bagili.netlify.app", 
-    "https://*.netlify.app", 
-    "http://localhost:3000",
-]
+# CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ALLOWED_ORIGINS = [
+#     # "https://expense-tracker-bagili.netlify.app", 
+#     "https://*.netlify.app", 
+#     "http://localhost:3000",
+# ]
 
 CORS_EXPOSE_HEADERS = [
     'Access-Control-Allow-Origin',
