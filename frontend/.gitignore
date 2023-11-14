@@ -2,3 +2,5 @@
 .netlify
 .env.production
 node_modules
+__pycache__/
+*.pyc
