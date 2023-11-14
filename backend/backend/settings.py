@@ -174,5 +174,9 @@ SIMPLE_JWT = {
 }
 
 
-if 'DYNO' in os.environ:
-    django_heroku.settings(locals(), staticfiles=False)
+# if 'DYNO' in os.environ:
+#     django_heroku.settings(locals(), staticfiles=False)
+
+
+import django_heroku
+django_heroku.settings(locals(), staticfiles=False)
