@@ -1204,6 +1204,38 @@ canvas {
   font-weight: bold; /* Make the text bold */
 }
 
+/* Ensure the delete button is aligned to the right and colored red */
+.delete-button {
+  margin-left: auto;
+  color: red;
+  cursor: pointer;
+}
+
+/* Use flexbox to align the date and delete button */
+td:last-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Additional styles to ensure the button does not change position */
+.delete-button {
+  margin-left: 10px;
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  font-size: inherit; /* Ensures that the emoji has the same font size as the text */
+}
+
+/* Fix the width of the last column to make sure it can fit the date and delete button */
+th:last-child,
+td:last-child {
+  min-width: 160px; /* Adjust as needed */
+}
+
+
+
 
 
 
