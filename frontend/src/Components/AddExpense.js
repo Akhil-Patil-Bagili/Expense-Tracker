@@ -8,6 +8,7 @@ const AddExpense = () => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null); // State for success message
 
   const handleAddExpense = (e) => {
     e.preventDefault();
@@ -27,19 +28,25 @@ const AddExpense = () => {
       },
       body: JSON.stringify(newExpense),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
-          return response.json().then((data) => {
-            throw new Error(data.detail || "Failed to add expense.");
-          });
+          const data = await response.json();
+          throw new Error(data.detail || "Failed to add expense.");
         }
         return response.json();
       })
       .then((data) => {
-        navigate("/dashboard");
+        setSuccess("Expense added successfully!"); // Set the success message
+        // Clear the form fields
+        setAmount("");
+        setDescription("");
+        setDate("");
+        // Reset the success message after a delay
+        setTimeout(() => setSuccess(null), 3000);
       })
       .catch((error) => {
         setError(error.message);
+        setSuccess(null); // Clear success message if there's an error
       });
   };
 
@@ -51,18 +58,17 @@ const AddExpense = () => {
     <div className="add-expense-form">
       <h1>Add Expense</h1>
       {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>} {/* Display success message */}
       <form onSubmit={handleAddExpense}>
-      <div className="input-field">
+        <div className="input-field">
           <i className="fas fa-dollar-sign"></i>
           <input
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            // placeholder="$"
             required
           />
         </div>
-
         <div className="input-field">
           <i className="fas fa-edit"></i>
           <input

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-    Chart,
+    Chart as ChartJS,
     CategoryScale,
     LinearScale,
     BarController,
@@ -11,22 +11,16 @@ import {
 } from "chart.js";
 import "../Styles/App.css";
 
-Chart.register(CategoryScale, LinearScale, BarController, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarController, BarElement, Title, Tooltip, Legend);
 
 const GraphView = () => {
     const [expenses, setExpenses] = useState([]);
     const [incomes, setIncomes] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [availableYears, setAvailableYears] = useState([]);
     const [error, setError] = useState(null);
 
     const chartRef = useRef(null);
-    const myChartRef = useRef(null);
-
-    const groupByMonth = (arr) => arr.reduce((acc, item) => {
-        const date = new Date(item.date);
-        const month = date.getMonth();
-        acc[month] = (acc[month] || 0) + parseFloat(item.amount);
-        return acc;
-    }, {});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,15 +34,20 @@ const GraphView = () => {
                     fetch(`${process.env.REACT_APP_API_URL}/api/incomes/`, { headers })
                 ]);
 
-                const expensesData = await expensesResponse.json();
-                const incomesData = await incomesResponse.json();
-
                 if (!expensesResponse.ok || !incomesResponse.ok) {
                     throw new Error("Failed to fetch data.");
                 }
 
+                const expensesData = await expensesResponse.json();
+                const incomesData = await incomesResponse.json();
+
                 setExpenses(expensesData.results);
                 setIncomes(incomesData.results);
+
+                // Determine the available years
+                const allDates = [...expensesData.results, ...incomesData.results].map(data => data.date);
+                const years = Array.from(new Set(allDates.map(date => new Date(date).getFullYear()))).sort();
+                setAvailableYears(years);
             } catch (err) {
                 setError("An error occurred while fetching data.");
                 console.error(err.message);
@@ -58,11 +57,39 @@ const GraphView = () => {
         fetchData();
     }, []);
 
+    // const groupByMonth = (arr) => arr.reduce((acc, item) => {
+    //     // Split the date string into components
+    //     const [year, month, day] = item.date.split('-').map(Number);
+    //     // Create a date object using UTC
+    //     const date = new Date(Date.UTC(year, month - 1, day));
+    //     const monthIndex = date.getUTCMonth(); // get the month in UTC
+    //     if (!acc[monthIndex]) {
+    //         acc[monthIndex] = { amount: 0, hasData: true };
+    //     }
+    //     acc[monthIndex].amount += parseFloat(item.amount);
+    //     return acc;
+    // }, {});
+
+    const groupByMonth = (arr, year) => {
+        return arr
+            .filter(item => {
+                const [itemYear, , ] = item.date.split('-').map(Number);
+                return itemYear === year;
+            })
+            .reduce((acc, item) => {
+                const [year, month, day] = item.date.split('-').map(Number);
+                const date = new Date(Date.UTC(year, month - 1, day));
+                const monthIndex = date.getUTCMonth();
+                acc[monthIndex] = (acc[monthIndex] || 0) + parseFloat(item.amount);
+                return acc;
+            }, {});
+    };
+
     useEffect(() => {
         if (!expenses.length && !incomes.length) return;
 
-        const monthlyExpenses = groupByMonth(expenses);
-        const monthlyIncomes = groupByMonth(incomes);
+        const monthlyExpenses = groupByMonth(expenses, selectedYear);
+        const monthlyIncomes = groupByMonth(incomes, selectedYear);
 
         const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const expensesData = labels.map((_, index) => monthlyExpenses[index] || 0);
@@ -71,73 +98,95 @@ const GraphView = () => {
         const maxYValue = Math.max(...expensesData, ...incomesData);
         const maxRoundedYValue = Math.ceil(maxYValue / 5000) * 5000;
 
-        if (chartRef.current && myChartRef.current) {
-            const { datasets } = myChartRef.current.data;
-            datasets[0].data = expensesData;
-            datasets[1].data = incomesData;
-
-            myChartRef.current.update();
-        } else {
-            const ctx = chartRef.current.getContext("2d");
-            myChartRef.current = new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Expenses",
-                            data: expensesData,
-                            backgroundColor: "rgba(255, 99, 132, 0.8)",
-                            borderColor: "rgba(255, 99, 132, 1)",
-                            borderWidth: 1,
-                        },
-                        {
-                            label: "Incomes",
-                            data: incomesData,
-                            backgroundColor: "rgba(75, 192, 192, 0.8)",
-                            borderColor: "rgba(75, 192, 192, 1)",
-                            borderWidth: 1,
+        const ctx = chartRef.current.getContext("2d");
+        const myChart = new ChartJS(ctx, {
+            type: "bar",
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: "Expenses",
+                        data: expensesData,
+                        backgroundColor: "rgba(255, 99, 132, 0.8)",
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 1,
+                        hoverBackgroundColor: "rgba(255, 99, 132, 1)",
+                    },
+                    {
+                        label: "Incomes",
+                        data: incomesData,
+                        backgroundColor: "rgba(75, 192, 192, 0.8)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1,
+                        hoverBackgroundColor: "rgba(75, 192, 192, 1)",
+                    }
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    x: {
+                        barThickness: 30,
+                    },
+                    y: {
+                        beginAtZero: true,
+                        stepSize: maxRoundedYValue / 10,
+                        max: maxRoundedYValue
+                    },
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 12,
+                                weight: 'bold',
+                            }
                         }
-                    ],
-                },
-                options: {
-                    scales: {
-                        x: {
-                            ticks: {
-                                font: { size: 10 },
-                            },
-                            barThickness: 30,
-                        },
-                        y: {
-                            ticks: {
-                                beginAtZero: true,
-                                font: { size: 10 },
-                                stepSize: Math.round(maxRoundedYValue / 10),
-                                min: 0,
-                                max: maxRoundedYValue
-                            },
-                        },
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                font: { size: 10 }
-                            },
-                        },
-                        tooltip: {
-                            titleFont: { size: 12 },
-                            bodyFont: { size: 10 }
-                        },
+                    tooltip: {
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        titleMarginBottom: 10,
+                        xPadding: 20,
+                        yPadding: 20,
+                        cornerRadius: 3,
+                        displayColors: false,
                     },
                 },
-            });
-        }
-    }, [expenses, incomes]);
+                animation: {
+                    duration: 800,
+                    easing: 'easeOutBounce',
+                },
+            },
+        });
+        
+
+        return () => {
+            myChart.destroy(); // Cleanup chart on component unmount
+        };
+    }, [expenses, incomes, selectedYear]);
 
     return (
         <div className="chart-view">
             {error && <p className="error-message">{error}</p>}
-            <canvas ref={chartRef}></canvas>
+            <div>
+                <label htmlFor="year-select">Select Year: </label>
+                <select
+                    id="year-select"
+                    value={selectedYear}
+                    onChange={e => setSelectedYear(Number(e.target.value))}
+                >
+                    {availableYears.map(year => (
+                        <option key={year} value={year}>
+                            {year}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <canvas ref={chartRef} />
         </div>
     );
 };
