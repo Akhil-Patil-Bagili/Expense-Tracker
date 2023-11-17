@@ -24,7 +24,7 @@ optional-django==0.1.0
 packaging==23.2
 pipenv==2023.6.26
 platformdirs==3.8.0
-psycopg2==2.9.9
+#psycopg2==2.9.9
 psycopg2-binary==2.9.9
 Pygments==2.15.1
 PyJWT==1.7.1
