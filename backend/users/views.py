@@ -208,6 +208,27 @@ class UserLoginView(APIView):
             print("Exception:", str(e))
             return Response({'error': 'An error occurred during login'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class UserExpenseDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id, format=None):
+        try:
+            expense = Expense.objects.get(id=id, user=request.user)
+            expense.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Expense.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+class UserIncomeDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id, format=None):
+        try:
+            income = Income.objects.get(id=id, user=request.user)
+            income.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Income.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 

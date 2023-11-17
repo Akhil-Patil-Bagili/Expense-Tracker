@@ -8,6 +8,7 @@ const AddIncome = () => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleAddIncome = (e) => {
     e.preventDefault();
@@ -36,10 +37,20 @@ const AddIncome = () => {
       return response.json();
     })
     .then((data) => {
-      navigate("/dashboard");
+      setSuccess("Income added successfully!"); // Set the success message
+      // Clear the form fields
+      setAmount("");
+      setDescription("");
+      setDate("");
+      // Reset the success message after a delay
+      setTimeout(() => setSuccess(null), 3000);
     })
+    // .then((data) => {
+    //   navigate("/dashboard");
+    // })
     .catch((error) => {
       setError(error.message);
+      setSuccess(null); 
     });
   };
 
@@ -51,6 +62,7 @@ const AddIncome = () => {
     <div className="add-income-form">
       <h1>Add Income</h1>
       {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
       <form onSubmit={handleAddIncome}>
         <div className="input-field">
           <i className="fas fa-dollar-sign"></i>

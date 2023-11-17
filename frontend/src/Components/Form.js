@@ -123,7 +123,7 @@ function Form({ showNameField, setShowNameField, setTitle }) {
         </div>
         <div className="btn-field" style={{ display: "flex", justifyContent: "center" }}>
           <button type="submit">
-            {showNameField ? "Sign Up" : "Sign In"}
+            {showNameField ? "Submit" : "Submit"}
           </button>
         </div>
       </form>

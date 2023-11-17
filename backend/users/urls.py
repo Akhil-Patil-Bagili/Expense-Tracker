@@ -1,5 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
+from .views import UserExpenseDeleteView, UserIncomeDeleteView
 
 from .views import (
     index,
@@ -22,5 +23,7 @@ urlpatterns = [
     path('api/total-expenses/', UserTotalExpenses, name='user-total-expenses'),
     path('api/total-incomes/', UserTotalIncomes, name='user-total-incomes'),
     path('api/expenses/create/', UserExpenseCreateView.as_view(), name='user-expense-create'),
-    path('api/incomes/create/', UserIncomeCreateView.as_view(), name='user-income-create')
+    path('api/incomes/create/', UserIncomeCreateView.as_view(), name='user-income-create'),
+    path('api/expenses/<int:id>/', UserExpenseDeleteView.as_view(), name='user-expense-delete'),
+    path('api/incomes/<int:id>/', UserIncomeDeleteView.as_view(), name='user-income-delete')
 ]
