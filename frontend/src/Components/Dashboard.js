@@ -5,6 +5,8 @@ import expenseImage from '../expense.png';
 import incomeImage from '../income.png';
 import chartImage from '../chart.png';
 import { RiDeleteBinLine } from 'react-icons/ri';
+import Chatbot from './ChatBot';  // Adjust the path if your Chatbot component is in a different directory
+
 
 const EXPENSES_URL = `${process.env.REACT_APP_API_URL}/api/expenses/`;
 const INCOMES_URL = `${process.env.REACT_APP_API_URL}/api/incomes/`;
@@ -189,6 +191,7 @@ const Dashboard = () => {
             <ListComponent title="Incomes" items={incomes} total={totalIncomesMemo} className="income-list" onDelete={handleDeleteIncome} />
           </div>
         </div>
+        <Chatbot />
       </div>
     </div>
   );

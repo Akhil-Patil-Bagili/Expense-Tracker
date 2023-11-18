@@ -7,6 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
 
+
 load_dotenv() 
 
 
@@ -25,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY','django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q')
 
-DEBUG = get_env_variable('DJANGO_DEBUG', 'False') == 'True'
+# DEBUG = get_env_variable('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['expense-tracker-bagili.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
@@ -181,3 +183,10 @@ if 'DYNO' in os.environ:
 
 # import django_heroku
 # django_heroku.settings(locals(), staticfiles=False)
+
+
+#Chat Bot
+OPENAI_API_KEY = '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'  # Replace with your actual API key
+
+
+LOGIN_URL = '/login/'

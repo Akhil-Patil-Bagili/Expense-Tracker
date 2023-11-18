@@ -234,3 +234,64 @@ class UserIncomeDeleteView(APIView):
 
 def index(request):
     return HttpResponse("Hello, this is the Expense Tracker API!")
+
+
+import json
+import openai
+from django.http import JsonResponse, HttpResponseBadRequest
+# from django.views.decorators.http import require_http_methods
+# from django.views.decorators.csrf import csrf_exempt
+# from django.contrib.auth.decorators import login_required
+from users.models import Expense, Income  # Import your models
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def ChatBotView(request):
+    try:
+        data = json.loads(request.body)
+        user_query = data.get('query')
+
+        # Fetch user-specific financial data (expenses and incomes)
+        # You'll need to adapt this to your data model
+        user_expenses = Expense.objects.filter(user=request.user)
+        user_incomes = Income.objects.filter(user=request.user)
+
+        # Create a list of messages to pass to the chatbot
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": user_query},
+        ]
+
+        # Add financial data to messages
+        for expense in user_expenses:
+            messages.append({"role": "user", "content": f"My expense is {expense.amount} on {expense.date}"})
+        for income in user_incomes:
+            messages.append({"role": "user", "content": f"My income is {income.amount} on {income.date}"})
+
+        # Set up OpenAI API key
+        openai.api_key = settings.OPENAI_API_KEY
+
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+
+            if response and 'choices' in response and len(response['choices']) > 0:
+                return JsonResponse({'response': response.choices[0].message['content']})
+            else:
+                return JsonResponse({'error': 'Invalid response from OpenAI.'}, status=500)
+
+        except Exception as e:
+            print("OpenAI API error:", str(e))
+            return JsonResponse({'error': 'OpenAI API error'}, status=500)
+
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest("Invalid JSON")
+    except Exception as e:
+        print("Generic error:", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+
