@@ -186,7 +186,8 @@ if 'DYNO' in os.environ:
 
 
 #Chat Bot
-OPENAI_API_KEY = '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'  # Replace with your actual API key
+OPENAI_API_KEY = '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'  # Replace with your actual API key
 
 
 LOGIN_URL = '/login/'
+

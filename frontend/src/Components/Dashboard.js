@@ -191,8 +191,8 @@ const Dashboard = () => {
             <ListComponent title="Incomes" items={incomes} total={totalIncomesMemo} className="income-list" onDelete={handleDeleteIncome} />
           </div>
         </div>
-        <Chatbot />
       </div>
+      <Chatbot />
     </div>
   );
 };

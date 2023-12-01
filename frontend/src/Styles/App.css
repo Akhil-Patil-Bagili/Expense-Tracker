@@ -1223,13 +1223,13 @@ td:last-child {
   min-width: 160px; /* Adjust as needed */
 }
 
-.chatbot-container {
+/* .chatbot-container {
   margin-top: 20px;
   padding: 15px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .messages-container {
   height: 300px;
@@ -1277,6 +1277,61 @@ td:last-child {
   background-color: #33006f;
 }
 
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+
+
+.chatbot-container.closed .chat-interface {
+  display: none;
+}
+
+.chat-avatar-icon {
+  width: 50px; /* Adjusted size for the icon */
+  height: 50px; /* Adjusted size for the icon */
+  border-radius: 50%; /* Ensures circular shape */
+  object-fit: cover; /* Ensures the image fits well in the circle */
+}
+
+.chatbot-container .chat-toggle {
+  background-color: transparent;
+  color: white;
+  padding: 5px; /* Adjusted padding for a better circular shape */
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  display: flex; /* To center the image or text inside the button */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  font-size: 16px;
+  width: 60px; /* Width of the circle */
+  height: 60px; /* Height of the circle */
+}
+
+.chat-interface {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  width: 300px; /* Adjust as needed */
+  max-height: 500px; /* Adjust as needed */
+  overflow: hidden;
+}
+
+/* Styling for the close button */
+.close-btn {
+  color: red; /* Red color for the close button */
+  font-size: 24px; /* Adjust the size as needed */
+  transition: transform 0.3s ease; /* Animation effect on hover */
+}
+
+.close-btn:hover {
+  transform: scale(1.1); /* Slightly enlarges the icon on hover */
+}
 
 
 
