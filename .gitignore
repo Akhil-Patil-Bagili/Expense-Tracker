@@ -1,1 +1,6 @@
-./backend/.env
+node_modules/
+build/
+.env
+.env.development
+.env.production
+.vscode/  # or any other IDE-specific folders
