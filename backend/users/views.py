@@ -241,6 +241,7 @@ def format_financial_data_to_text(expenses, incomes):
 
 
 import json
+# import openai
 import openai
 from django.http import JsonResponse, HttpResponseBadRequest
 # from django.views.decorators.http import require_http_methods
@@ -284,6 +285,7 @@ def ChatBotView(request):
         else:
             return JsonResponse({'error': 'Invalid response from OpenAI.'}, status=500)
     except Exception as e:
+        print("Error in ChatBotView:", str(e))
         return JsonResponse({'error': str(e)}, status=500)
 
 
