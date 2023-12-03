@@ -22,7 +22,7 @@ const Contact = () => (
                 <a href="https://www.instagram.com/akhil_patil_b/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                     <AiFillInstagram className="social-icon" />
                 </a>
-                <a href="YOUR_GITHUB_LINK_HERE" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <a href="https://github.com/Akhil-Patil-Bagili" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <FaGithub className="social-icon" />
                 </a>
                 <a href="https://www.linkedin.com/in/akhil-patil-bagili/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">

@@ -174,7 +174,6 @@ class UserRegistrationView(APIView):
 
 
 
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -234,3 +233,60 @@ class UserIncomeDeleteView(APIView):
 
 def index(request):
     return HttpResponse("Hello, this is the Expense Tracker API!")
+
+def format_financial_data_to_text(expenses, incomes):
+    expense_text = "\n".join([f"Expense: {expense.amount}, Date: {expense.date}" for expense in expenses])
+    income_text = "\n".join([f"Income: {income.amount}, Date: {income.date}" for income in incomes])
+    return expense_text + "\n" + income_text
+
+
+import json
+# import openai
+import openai
+from django.http import JsonResponse, HttpResponseBadRequest
+# from django.views.decorators.http import require_http_methods
+# from django.views.decorators.csrf import csrf_exempt
+# from django.contrib.auth.decorators import login_required
+from users.models import Expense, Income  # Import your models
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def ChatBotView(request):
+    try:
+        data = json.loads(request.body)
+        user_query = data.get('query')
+        user = request.user
+
+        # Fetch user-specific financial data (expenses and incomes)
+        
+        user_expenses = Expense.objects.filter(user=user)
+        user_incomes = Income.objects.filter(user=user)
+
+        # Create a combined list of financial data
+        financial_data_text = format_financial_data_to_text(user_expenses, user_incomes)
+
+        # Create messages to pass to the chatbot
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": financial_data_text},
+            {"role": "user", "content": user_query},
+        ]
+
+        # Set up OpenAI API key and make the request
+        openai.api_key = settings.OPENAI_API_KEY
+        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+
+        # Process the response
+        if response and 'choices' in response and len(response['choices']) > 0:
+            return JsonResponse({'response': response.choices[0].message['content']})
+        else:
+            return JsonResponse({'error': 'Invalid response from OpenAI.'}, status=500)
+    except Exception as e:
+        print("Error in ChatBotView:", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+

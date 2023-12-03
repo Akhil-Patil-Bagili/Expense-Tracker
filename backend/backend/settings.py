@@ -1,35 +1,23 @@
+import os
+import dj_database_url
+import django_heroku
 from pathlib import Path
 from datetime import timedelta
-import os
-import django_heroku
-import dj_database_url
-from django.core.exceptions import ImproperlyConfigured
-from dotenv import load_dotenv
 
+# Load environment variables from .env file if present
+if os.path.isfile('.env'):
+    from dotenv import load_dotenv
+    load_dotenv()
 
-load_dotenv() 
-
-
-def get_env_variable(var_name, default_value=None):
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        if default_value is not None:
-            return default_value
-        else:
-            error_msg = f"Set the {var_name} environment variable"
-            raise ImproperlyConfigured(error_msg)
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = get_env_variable('DJANGO_SECRET_KEY','django-insecure-5lt_gu87^hplnp*ygcfjp0v(^dh_-&8694j7k%f=&asvsh1i+q')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
 
-DEBUG = get_env_variable('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['expense-tracker-bagili.herokuapp.com', '.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
-
+# Application definition
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'corsheaders',
@@ -42,7 +30,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
-    'users',
+    'users',  # Your custom app
+    # ... any other apps
 ]
 
 MIDDLEWARE = [
@@ -62,7 +51,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],  # Serve the React build folder
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,32 +66,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# DATABASES = {
-#             'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'expense_tracker',  # Update with your local database name
-#             'USER': 'trevor',  # Update with your local database user
-#             'PASSWORD': 'gtafive',  # Update with your local database password
-#             'HOST': 'localhost',
-#             'PORT': '5432',
-#         }
-# }
-DATABASES = {}
-DATABASE_URL = get_env_variable('DATABASE_URL', None)
+# Database
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://postgres:gtafive@localhost:5432/expense_tracker')
+}
 
-if DEBUG or not DATABASE_URL:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'expense_tracker',  # Update with your local database name
-        'USER': 'trevor',  # Update with your local database user
-        'PASSWORD': 'gtafive',  # Update with your local database password
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'OPTIONS': {'sslmode' : 'disable'},
-    }
-else:
-    DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
+# Add SSL configuration for Heroku Postgres
+if os.environ.get('DATABASE_URL'):
+    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -118,42 +91,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CORS settings
 CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOWED_ORIGINS = [
-#     "https://expense-tracker-bagili.netlify.app", 
-#     # "*.netlify.app", 
-#     "http://localhost:3000",
-# ]
-
-CORS_EXPOSE_HEADERS = [
-    'Access-Control-Allow-Origin',
-    # ... other headers you want to expose
-]
-
 CORS_ALLOW_CREDENTIALS = True
+CORS_EXPOSE_HEADERS = ['Access-Control-Allow-Origin']
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-STATICFILES_DIRS = []
-WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'root')
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-if 'django.middleware.security.SecurityMiddleware' in MIDDLEWARE:
-    MIDDLEWARE.remove('django.middleware.security.SecurityMiddleware')
-MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
-MIDDLEWARE.insert(1, 'django.middleware.security.SecurityMiddleware')
-
+# REST framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -165,6 +122,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
+# Simple JWT settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
@@ -174,10 +132,8 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+# Configure Django App for Heroku.
+django_heroku.settings(locals(), staticfiles=False, logging=False)
 
-if 'DYNO' in os.environ:
-    django_heroku.settings(locals(), staticfiles=False)
-
-
-# import django_heroku
-# django_heroku.settings(locals(), staticfiles=False)
+# OpenAI API key
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')

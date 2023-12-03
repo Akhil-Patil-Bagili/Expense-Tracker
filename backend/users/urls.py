@@ -11,7 +11,8 @@ from .views import (
     UserTotalExpenses,
     UserTotalIncomes,
     UserExpenseCreateView,
-    UserIncomeCreateView
+    UserIncomeCreateView,
+    ChatBotView
 )
 
 urlpatterns = [
@@ -25,5 +26,6 @@ urlpatterns = [
     path('api/expenses/create/', UserExpenseCreateView.as_view(), name='user-expense-create'),
     path('api/incomes/create/', UserIncomeCreateView.as_view(), name='user-income-create'),
     path('api/expenses/<int:id>/', UserExpenseDeleteView.as_view(), name='user-expense-delete'),
-    path('api/incomes/<int:id>/', UserIncomeDeleteView.as_view(), name='user-income-delete')
+    path('api/incomes/<int:id>/', UserIncomeDeleteView.as_view(), name='user-income-delete'),
+    path('api/chat/', ChatBotView, name='chatbot')
 ]

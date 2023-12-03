@@ -1,6 +1,7 @@
 # Local Netlify folder
 .netlify
-.env.production
+.env.development
+.env
 node_modules
 __pycache__/
 *.pyc

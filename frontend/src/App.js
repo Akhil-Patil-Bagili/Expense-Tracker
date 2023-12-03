@@ -8,6 +8,7 @@ import Dashboard from "./Components/Dashboard";
 import AddExpense from "./Components/AddExpense";
 import AddIncome from "./Components/AddIncome"; 
 import GraphView from "./Components/GraphView";
+import ChatBot from "./Components/ChatBot";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./Styles/App.css";
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/add-expense" element={<AddExpense />} />
             <Route path="/add-income" element={<AddIncome />} />
             <Route path="/view-graphs" element={<GraphView />} />
+            <Route path="/chat" element={<ChatBot />} />
           </Routes>
         </Router>
       </div>
