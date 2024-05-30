@@ -66,9 +66,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://postgres:gtafive@localhost:5432/expense_tracker')
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'expense_tracker',
+        'USER': 'postgres',
+        'PASSWORD': 'gtafive',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 # Add SSL configuration for Heroku Postgres

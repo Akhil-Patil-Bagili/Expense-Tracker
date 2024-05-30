@@ -258,28 +258,31 @@ def ChatBotView(request):
     try:
         data = json.loads(request.body)
         user_query = data.get('query')
+        openai_api_key = data.get('apiKey')  # Receive API key from the frontend
+
+        if not openai_api_key:
+            return JsonResponse({'error': 'API key is missing.'}, status=400)
+
+        # Use the provided API key for this request only
         user = request.user
 
-        # Fetch user-specific financial data (expenses and incomes)
-        
         user_expenses = Expense.objects.filter(user=user)
         user_incomes = Income.objects.filter(user=user)
 
-        # Create a combined list of financial data
         financial_data_text = format_financial_data_to_text(user_expenses, user_incomes)
 
-        # Create messages to pass to the chatbot
         messages = [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": financial_data_text},
             {"role": "user", "content": user_query},
         ]
 
-        # Set up OpenAI API key and make the request
-        openai.api_key = settings.OPENAI_API_KEY
-        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            api_key=openai_api_key  # Pass the API key dynamically
+        )
 
-        # Process the response
         if response and 'choices' in response and len(response['choices']) > 0:
             return JsonResponse({'response': response.choices[0].message['content']})
         else:

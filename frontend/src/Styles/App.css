@@ -1352,6 +1352,72 @@ td:last-child {
   transform: scale(1.1); /* Slightly enlarges the icon on hover */
 }
 
+.api-key-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.api-key-modal-content {
+  background: white;
+  padding: 10px; /* Consistent padding for a tighter look */
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height:240px;
+  width: 380px; /* Specify a fixed width for consistent sizing */
+  /* min-height: auto; Remove any minimum height */
+}
+
+h3 {
+  margin-bottom: 5px; /* Reduce bottom margin to tighten space */
+  text-align: center;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* Reduce bottom margin for a tighter grouping */
+}
+
+.api-key-input {
+  flex-grow: 1; /* Allow the input to expand fully within the container */
+  padding: 8px 10px; /* Appropriate padding inside the input */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.show-api-key-btn {
+  padding: 8px 15px; /* Adjust padding to align with the input field height */
+  background-color: #3c00a0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.toggle-password-icon {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #3c00a0; /* Match your color scheme */
+  font-size: 20px; /* Adjust size as needed */
+}
+
+.api-key-input {
+  flex-grow: 1;
+  padding-right: 30px; /* Give space for the icon */
+}
 
 
 
