@@ -37,17 +37,12 @@ const AddIncome = () => {
       return response.json();
     })
     .then((data) => {
-      setSuccess("Income added successfully!"); // Set the success message
-      // Clear the form fields
+      setSuccess("Income added successfully!");
       setAmount("");
       setDescription("");
       setDate("");
-      // Reset the success message after a delay
       setTimeout(() => setSuccess(null), 3000);
     })
-    // .then((data) => {
-    //   navigate("/dashboard");
-    // })
     .catch((error) => {
       setError(error.message);
       setSuccess(null); 

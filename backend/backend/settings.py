@@ -4,7 +4,6 @@ import django_heroku
 from pathlib import Path
 from datetime import timedelta
 
-# Load environment variables from .env file if present
 if os.path.isfile('.env'):
     from dotenv import load_dotenv
     load_dotenv()
@@ -17,7 +16,6 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
-# Application definition
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'corsheaders',
@@ -30,8 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
-    'users',  # Your custom app
-    # ... any other apps
+    'users',  
 ]
 
 MIDDLEWARE = [
@@ -67,21 +64,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'expense_tracker',
-        'USER': 'postgres',
-        'PASSWORD': 'gtafive',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
 
-# Add SSL configuration for Heroku Postgres
 if os.environ.get('DATABASE_URL'):
     DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -97,26 +85,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS settings
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_EXPOSE_HEADERS = ['Access-Control-Allow-Origin']
 
-# REST framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -128,7 +111,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
-# Simple JWT settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
@@ -138,8 +120,6 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# Configure Django App for Heroku.
 django_heroku.settings(locals(), staticfiles=False, logging=False)
 
-# OpenAI API key
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')

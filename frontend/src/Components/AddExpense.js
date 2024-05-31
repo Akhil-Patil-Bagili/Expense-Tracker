@@ -8,7 +8,7 @@ const AddExpense = () => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null); // State for success message
+  const [success, setSuccess] = useState(null);
 
   const handleAddExpense = (e) => {
     e.preventDefault();
@@ -36,17 +36,15 @@ const AddExpense = () => {
         return response.json();
       })
       .then((data) => {
-        setSuccess("Expense added successfully!"); // Set the success message
-        // Clear the form fields
+        setSuccess("Expense added successfully!");
         setAmount("");
         setDescription("");
         setDate("");
-        // Reset the success message after a delay
         setTimeout(() => setSuccess(null), 3000);
       })
       .catch((error) => {
         setError(error.message);
-        setSuccess(null); // Clear success message if there's an error
+        setSuccess(null); 
       });
   };
 
@@ -58,7 +56,7 @@ const AddExpense = () => {
     <div className="add-expense-form">
       <h1>Add Expense</h1>
       {error && <p className="error-message">{error}</p>}
-      {success && <p className="success-message">{success}</p>} {/* Display success message */}
+      {success && <p className="success-message">{success}</p>}
       <form onSubmit={handleAddExpense}>
         <div className="input-field">
           <i className="fas fa-dollar-sign"></i>

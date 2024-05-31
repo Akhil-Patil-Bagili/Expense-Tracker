@@ -12,7 +12,6 @@ function ChatBot() {
     const [isOpen, setIsOpen] = useState(false); 
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
 
-    // Toggle functions
     const toggleChat = () => {
         setIsOpen(!isOpen);
         if (!isOpen && !sessionStorage.getItem('openaiApiKey')) {

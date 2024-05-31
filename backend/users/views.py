@@ -1,8 +1,5 @@
-# Standard library imports
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-
-# Third-party imports
 from rest_framework import status, generics, exceptions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,9 +7,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
-# Local application/library specific imports
 from .serializers import UserSerializer, ExpenseSerializer, IncomeSerializer
 from . import models
 from .models import Expense, Income
@@ -35,15 +29,14 @@ def UserTotalIncomes(request):
     return Response({'total_incomes': total_incomes}, status=status.HTTP_200_OK)
 
 class UserExpenseListView(APIView):
-    permission_classes = [IsAuthenticated]  # Define the permission_classes here
+    permission_classes = [IsAuthenticated]  
 
     def get(self, request):
         user = request.user
         expenses = Expense.objects.filter(user=user).order_by('-date')
 
-        # Add pagination for expenses
         paginator = PageNumberPagination()
-        paginator.page_size = 10  # Number of expenses per page
+        paginator.page_size = 10 
         result_page = paginator.paginate_queryset(expenses, request)
         
         serializer = ExpenseSerializer(result_page, many=True)
@@ -51,15 +44,14 @@ class UserExpenseListView(APIView):
 
 
 class UserIncomeListView(APIView):
-    permission_classes = [IsAuthenticated]  # Define the permission_classes here
+    permission_classes = [IsAuthenticated] 
 
     def get(self, request):
         user = request.user
         incomes = Income.objects.filter(user=user).order_by('-date')
 
-        # Add pagination for expenses
         paginator = PageNumberPagination()
-        paginator.page_size = 10  # Number of expenses per page
+        paginator.page_size = 10  
         result_page = paginator.paginate_queryset(incomes, request)
         
         serializer = IncomeSerializer(result_page, many=True)
@@ -99,25 +91,19 @@ class UserExpenseCreateView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         try:
-            # Print the received data for debugging purposes
-            print("Received data:", self.request.data)
             
-            # Check if the user is authenticated
             if not self.request.user.is_authenticated:
                 raise ValidationError("User is not authenticated.")
             
-            # Validate the serializer data
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             
-            # Save the expense with the user information
             serializer.save(user=self.request.user)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            # Print the exception message for debugging purposes
             print("Exception:", str(e))
-            raise ValidationError(str(e))  # Raise a ValidationError with the exception message
+            raise ValidationError(str(e))  
 
 
 
@@ -136,25 +122,19 @@ class UserIncomeCreateView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         try:
-            # Print the received data for debugging purposes
-            print("Received data:", self.request.data)
             
-            # Check if the user is authenticated
             if not self.request.user.is_authenticated:
                 raise ValidationError("User is not authenticated.")
             
-            # Validate the serializer data
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             
-            # Save the expense with the user information
             serializer.save(user=self.request.user)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            # Print the exception message for debugging purposes
             print("Exception:", str(e))
-            raise ValidationError(str(e))  # Raise a ValidationError with the exception message
+            raise ValidationError(str(e))  
 
 
 from rest_framework.response import Response
@@ -163,7 +143,7 @@ from rest_framework import status
 from .serializers import UserSerializer
 
 class UserRegistrationView(APIView):
-    permission_classes = [AllowAny]  # Allow any user to access this view
+    permission_classes = [AllowAny]  
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -189,7 +169,7 @@ class UserLoginView(APIView):
             username = request.data.get('username')
             password = request.data.get('password')
 
-            # Attempt to authenticate the user
+            
             user = authenticate(username=username, password=password)
 
             if user is not None:
@@ -199,12 +179,9 @@ class UserLoginView(APIView):
 
                 return Response({'access': access_token, 'message': 'Login successful'}, status=status.HTTP_200_OK)
             else:
-                print("Invalid username or password")
                 return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
         except Exception as e:
-            # Print the exception message for debugging purposes
-            print("Exception:", str(e))
             return Response({'error': 'An error occurred during login'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UserExpenseDeleteView(APIView):
@@ -241,13 +218,9 @@ def format_financial_data_to_text(expenses, incomes):
 
 
 import json
-# import openai
 import openai
 from django.http import JsonResponse, HttpResponseBadRequest
-# from django.views.decorators.http import require_http_methods
-# from django.views.decorators.csrf import csrf_exempt
-# from django.contrib.auth.decorators import login_required
-from users.models import Expense, Income  # Import your models
+from users.models import Expense, Income 
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -258,12 +231,11 @@ def ChatBotView(request):
     try:
         data = json.loads(request.body)
         user_query = data.get('query')
-        openai_api_key = data.get('apiKey')  # Receive API key from the frontend
+        openai_api_key = data.get('apiKey')
 
         if not openai_api_key:
             return JsonResponse({'error': 'API key is missing.'}, status=400)
 
-        # Use the provided API key for this request only
         user = request.user
 
         user_expenses = Expense.objects.filter(user=user)
@@ -280,7 +252,7 @@ def ChatBotView(request):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            api_key=openai_api_key  # Pass the API key dynamically
+            api_key=openai_api_key 
         )
 
         if response and 'choices' in response and len(response['choices']) > 0:

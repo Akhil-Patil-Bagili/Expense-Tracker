@@ -5,14 +5,13 @@ import expenseImage from '../expense.png';
 import incomeImage from '../income.png';
 import chartImage from '../chart.png';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import Chatbot from './ChatBot';  // Adjust the path if your Chatbot component is in a different directory
+import Chatbot from './ChatBot';  
 
 
 const EXPENSES_URL = `${process.env.REACT_APP_API_URL}/api/expenses/`;
 const INCOMES_URL = `${process.env.REACT_APP_API_URL}/api/incomes/`;
 
 const ListComponent = ({ title, items, total, className, onDelete }) => {
-  // Function to handle delete confirmation
   const confirmDelete = (item) => {
     if (window.confirm(`Are you sure you want to delete "${item.description}" from the list of ${title.toLowerCase()}?`)) {
       onDelete(item.id);

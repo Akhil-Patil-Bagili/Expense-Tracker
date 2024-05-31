@@ -44,7 +44,6 @@ const GraphView = () => {
                 setExpenses(expensesData.results);
                 setIncomes(incomesData.results);
 
-                // Determine the available years
                 const allDates = [...expensesData.results, ...incomesData.results].map(data => data.date);
                 const years = Array.from(new Set(allDates.map(date => new Date(date).getFullYear()))).sort();
                 setAvailableYears(years);
@@ -57,18 +56,7 @@ const GraphView = () => {
         fetchData();
     }, []);
 
-    // const groupByMonth = (arr) => arr.reduce((acc, item) => {
-    //     // Split the date string into components
-    //     const [year, month, day] = item.date.split('-').map(Number);
-    //     // Create a date object using UTC
-    //     const date = new Date(Date.UTC(year, month - 1, day));
-    //     const monthIndex = date.getUTCMonth(); // get the month in UTC
-    //     if (!acc[monthIndex]) {
-    //         acc[monthIndex] = { amount: 0, hasData: true };
-    //     }
-    //     acc[monthIndex].amount += parseFloat(item.amount);
-    //     return acc;
-    // }, {});
+    
 
     const groupByMonth = (arr, year) => {
         return arr
@@ -165,7 +153,7 @@ const GraphView = () => {
         
 
         return () => {
-            myChart.destroy(); // Cleanup chart on component unmount
+            myChart.destroy(); 
         };
     }, [expenses, incomes, selectedYear]);
 

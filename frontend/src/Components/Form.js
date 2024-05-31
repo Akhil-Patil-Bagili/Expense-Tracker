@@ -19,7 +19,7 @@ function Form({ showNameField, setShowNameField, setTitle }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setError(null); // Reset the error state whenever there's a change in input
+    setError(null); 
   };
 
   const handleSignUp = async (e) => {

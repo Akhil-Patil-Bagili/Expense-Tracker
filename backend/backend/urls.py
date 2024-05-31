@@ -7,6 +7,6 @@ import os
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
-    path('', include('users.urls')),  # Include users app URLs for root URL
+    path('', include('users.urls')),  
 ]
 
