@@ -54,7 +54,7 @@ function ChatBot() {
         }
         setIsLoading(true);
         const token = localStorage.getItem('access');
-        fetch('http://localhost:8000/api/chat/', {
+        fetch(`${process.env.REACT_APP_API_URL}/api/chat/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
